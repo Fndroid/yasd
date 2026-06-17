@@ -1,4 +1,4 @@
-import React, { createRef, useRef } from 'react'
+import React, { createRef, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import useSWR from 'swr'
@@ -26,9 +26,10 @@ export const Component: React.FC = () => {
     fetcher,
   )
   const policyGroupNames = (policies && policies['policy-groups']) || []
-  const refs = policyGroupNames.map(() => {
-    return createRef<HTMLDivElement>()
-  })
+  const refs = useMemo(
+    () => policyGroupNames.map(() => createRef<HTMLDivElement>()),
+    [policyGroupNames],
+  )
   const headerRef = useRef<HTMLDivElement>(null)
   const { data: policyPerformanceResults } = usePolicyPerformance()
 
