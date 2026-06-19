@@ -19,6 +19,7 @@ import { cn } from '@/utils/shadcn'
 import { mutatePolicyPerformanceResults } from '../usePolicyPerformance'
 
 interface PolicyGroupProps {
+  columnCount: number
   policyGroupName: string
   policyGroup: Policy[]
   policyPerformanceResults?: PolicyBenchmarkResults
@@ -98,6 +99,7 @@ const PolicyCard = React.memo<PolicyCardProps>(
 PolicyCard.displayName = 'PolicyCard'
 
 const PolicyGroup: React.FC<PolicyGroupProps> = ({
+  columnCount,
   policyGroupName,
   policyGroup,
   policyPerformanceResults,
@@ -269,7 +271,6 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
 
   const renderVirtualizedPolicyList = useCallback(
     (width: number, height: number) => {
-      const columnCount = width >= 768 ? 4 : width >= 560 ? 3 : 2
       const columnWidth =
         (width - POLICY_CARD_GAP * (columnCount - 1)) / columnCount
       const rowCount = Math.ceil(policyGroup.length / columnCount)
@@ -315,7 +316,7 @@ const PolicyGroup: React.FC<PolicyGroupProps> = ({
         />
       )
     },
-    [policyGroup, renderPolicyCard],
+    [columnCount, policyGroup, renderPolicyCard],
   )
 
   useEffect(() => {
